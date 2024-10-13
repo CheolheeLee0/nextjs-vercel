@@ -1,6 +1,7 @@
 'use client'
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Joyride, { Step } from 'react-joyride';
 
 // 설명 상태를 위한 인터페이스 정의
 interface ExplanationState {
@@ -13,6 +14,12 @@ interface ExplanationState {
 
 export default function Home() {
   const [showExplanations, setShowExplanations] = useState<ExplanationState>({});
+  const [runTour, setRunTour] = useState(true);  // Keep this as true
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const toggleExplanation = (sectionId: keyof ExplanationState) => {
     setShowExplanations(prev => ({
@@ -21,6 +28,42 @@ export default function Home() {
     }));
   };
 
+  const steps: Step[] = [
+    {
+      target: '.layout-examples',
+      content: '여기서 다양한 레이아웃 예제를 확인할 수 있습니다.',
+      placement: 'right',
+    },
+    {
+      target: '.two-column-layout',
+      content: '기본적인 2열 구조 레이아웃입니다. 모바일에서는 세로로, 데스크톱에서는 가로로 배치됩니다.',
+    },
+    {
+      target: '.three-column-grid',
+      content: '화면 크기에 따라 1열, 2열, 3열로 변화하는 반응형 그리드 레이아웃입니다.',
+    },
+    {
+      target: '.sidebar-layout',
+      content: '사이드바와 메인 콘텐츠 영역을 가진 일반적인 웹 페이지 구조입니다.',
+    },
+    {
+      target: '.card-grid-layout',
+      content: '반응형 카드 그리드 레이아웃입니다. 화면 크기에 따라 열 수가 변경됩니다.',
+    },
+    {
+      target: '.header-footer-layout',
+      content: '헤더, 메인 콘텐츠, 푸터로 구성된 ��형적인 웹 페이지 구조입니다.',
+    },
+    {
+      target: '.explanation-button',
+      content: '이 버튼을 클릭하면 각 레이아웃에 사용된 CSS 클래스에 대한 자세한 설명을 볼 수 있습니다.',
+    },
+  ];
+
+  if (!isMounted) {
+    return null; // 또는 로딩 인디케이터
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Head>
@@ -28,18 +71,38 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      {isMounted && (
+        <Joyride
+          steps={steps}
+          run={runTour}
+          continuous={true}
+          showSkipButton={true}
+          styles={{
+            options: {
+              primaryColor: '#3b82f6',
+            },
+          }}
+          callback={(data) => {
+            const { status } = data;
+            if (status === 'finished' || status === 'skipped') {
+              setRunTour(false);
+            }
+          }}
+        />
+      )}
+
       <main className="flex-grow flex">
         <div className="w-1/2 overflow-y-auto p-4 border-r">
           <h1 className="text-3xl font-bold mb-6">Layout Examples</h1>
           
-          <div className="space-y-8">
+          <div className="space-y-8 layout-examples">
             {/* 각 섹션을 여기에 배치 */}
-            <section>
+            <section className="two-column-layout">
               <h2 className="text-2xl font-semibold mb-4">Basic Two-Column Layout</h2>
               <p className="mb-4">이 레이아웃은 기본적인 2열 구조를 보여줍니다. 모바일에서는 세로로, 데스크톱에서는 가로로 배치됩니다.</p>
               <button
                 onClick={() => toggleExplanation('twoColumn')}
-                className="mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                className="explanation-button mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
               >
                 {showExplanations.twoColumn ? '설명 숨기기' : 'CSS 클래스 설명 보기'}
               </button>
@@ -50,7 +113,7 @@ export default function Home() {
                     <li><code>gap-4</code>: 요소 사이에 1rem(16px) 간격 추가</li>
                     <li><code>flex-1</code>: 각 열이 동일한 너비를 가지도록 설정</li>
                     <li><code>bg-blue-100</code>, <code>bg-green-100</code>: 배경색 지정</li>
-                    <li><code>p-4</code>: 모든 방향에 1rem 패딩 추가</li>
+                    <li><code>p-4</code>: 모든 방향에 1rem 패딩 가</li>
                     <li><code>rounded</code>: 모서리를 둥글게 처리</li>
                   </ul>
                 </div>
@@ -65,7 +128,7 @@ export default function Home() {
 
             <hr />
 
-            <section>
+            <section className="three-column-grid">
               <h2 className="text-2xl font-semibold mb-4">Responsive Three-Column Grid</h2>
               <p className="mb-4">이 그리드는 화면 크기에 따라 1열, 2열, 3열로 변화하는 반응형 레이아웃입니다.</p>
               <button
@@ -94,7 +157,7 @@ export default function Home() {
               </pre>
             </section>
 
-            <section>
+            <section className="sidebar-layout">
               <h2 className="text-2xl font-semibold mb-4">Sidebar with Main Content</h2>
               <p className="mb-4">이 레이아웃은 사이드바와 메인 콘텐츠 영역을 가진 일반적인 웹 페이지 구조를 보여줍니다.</p>
               <button
@@ -127,7 +190,7 @@ export default function Home() {
 
             <hr />
 
-            <section>
+            <section className="card-grid-layout">
               <h2 className="text-2xl font-semibold mb-4">Card Grid Layout</h2>
               <p className="mb-4">이 레이아웃은 반응형 카드 그리드를 구현합니다. 화면 크기에 따라 열 수가 변경됩니다.</p>
               <button
@@ -159,7 +222,7 @@ export default function Home() {
 
             <hr />
 
-            <section>
+            <section className="header-footer-layout">
               <h2 className="text-2xl font-semibold mb-4">Header, Main, Footer Layout</h2>
               <p className="mb-4">이 레이아웃은 전형적인 웹 페이지 구조 더, 메인 콘텐츠, 푸터를 구현합니다.</p>
               <button
@@ -171,7 +234,7 @@ export default function Home() {
               {showExplanations.headerFooter && (
                 <div className="mb-4 p-4 bg-gray-100 rounded">
                   <ul className="list-disc pl-5">
-                    <li><code>flex flex-col min-h-screen</code>: 전형적인 웹 페이지 구조</li>
+                    <li><code>flex flex-col min-h-screen</code>: 전�����인 웹 페이지 구조</li>
                     <li><code>bg-blue-500</code>: 헤더의 배경색 설정</li>
                     <li><code>text-white</code>: 헤더의 텍스트 색상 설정</li>
                     <li><code>p-4</code>: 헤더의 패딩 설정</li>
