@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar';
 
 export default function TodoPage() {
   const [newTodo, setNewTodo] = useState('');
+  const [showState, setShowState] = useState(false);
   const { todos, addTodo, toggleTodo, deleteTodo } = useTodoStore();
 
   const handleAddTodo = () => {
@@ -57,6 +58,21 @@ export default function TodoPage() {
             </li>
           ))}
         </ul>
+
+        <div className="mt-8">
+          <button
+            onClick={() => setShowState(!showState)}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            {showState ? '상태 숨기기' : '상태 보기'}
+          </button>
+          
+          {showState && (
+            <pre className="mt-4 p-4 bg-gray-100 rounded overflow-auto">
+              {JSON.stringify(todos, null, 2)}
+            </pre>
+          )}
+        </div>
       </main>
     </div>
   );
