@@ -27,7 +27,13 @@ const Sidebar = () => {
               <li>
                 <Link href="/todo" className="block p-3 rounded hover:bg-[#0065FF] transition-all duration-300">
                   <h3 className="text-lg font-semibold">Todo List</h3>
-                  <p className="text-sm text-blue-200">할 일 목록 관리</p>
+                  <p className="text-sm text-blue-200">할 일 목록</p>
+                </Link>
+              </li>
+              <li>
+                <Link href="/widget" className="block p-3 rounded hover:bg-[#0065FF] transition-all duration-300">
+                  <h3 className="text-lg font-semibold">Widget</h3>
+                  <p className="text-sm text-blue-200">위젯 목록</p>
                 </Link>
               </li>
             </ul>
