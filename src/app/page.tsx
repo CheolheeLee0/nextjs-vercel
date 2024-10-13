@@ -2,6 +2,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Joyride, { Step } from 'react-joyride';
+import Sidebar from './components/Sidebar';
 
 // 설명 상태를 위한 인터페이스 정의
 interface ExplanationState {
@@ -52,7 +53,7 @@ export default function Home() {
     },
     {
       target: '.header-footer-layout',
-      content: '헤더, 메인 콘텐츠, 푸터로 구성된 ��형적인 웹 페이지 구조입니다.',
+      content: '헤더, 메인 콘텐츠, 푸터로 구성된 형적인 웹 페이지 구조입니다.',
     },
     {
       target: '.explanation-button',
@@ -65,11 +66,13 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen">
       <Head>
         <title>Next.js & Tailwind CSS Layout Examples</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Sidebar />
 
       {isMounted && (
         <Joyride
@@ -92,7 +95,7 @@ export default function Home() {
       )}
 
       <main className="flex-grow flex">
-        <div className="w-1/2 overflow-y-auto p-4 border-r">
+        <div className="w-full lg:w-1/2 overflow-y-auto p-4 border-r">
           <h1 className="text-3xl font-bold mb-6">Layout Examples</h1>
           
           <div className="space-y-8 layout-examples">
@@ -234,7 +237,7 @@ export default function Home() {
               {showExplanations.headerFooter && (
                 <div className="mb-4 p-4 bg-gray-100 rounded">
                   <ul className="list-disc pl-5">
-                    <li><code>flex flex-col min-h-screen</code>: 전�����인 웹 페이지 구조</li>
+                    <li><code>flex flex-col min-h-screen</code>: 전체 화면 구조</li>
                     <li><code>bg-blue-500</code>: 헤더의 배경색 설정</li>
                     <li><code>text-white</code>: 헤더의 텍스트 색상 설정</li>
                     <li><code>p-4</code>: 헤더의 패딩 설정</li>
@@ -257,7 +260,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="w-1/2 overflow-y-auto p-4">
+        <div className="hidden lg:block w-1/2 overflow-y-auto p-4">
           <h1 className="text-3xl font-bold mb-6">Layout Examples</h1>
           
           <div className="space-y-8">
