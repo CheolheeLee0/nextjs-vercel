@@ -1,50 +1,38 @@
 import Link from 'next/link';
 import { useState } from 'react';
-import { FaBars, FaTimes, FaHome, FaListUl } from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className={`bg-[#F5F5F7] text-[#1D1D1F] h-screen transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'} relative shadow-lg`}>
+    <div className={`bg-[#0052CC] text-white min-h-screen transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'} relative flex flex-col`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`absolute top-4 ${isOpen ? 'right-4' : 'left-1/2 -translate-x-1/2'} p-2 bg-white text-[#1D1D1F] rounded-full hover:bg-gray-100 shadow-md transition-all duration-300`}
+        className={`absolute top-4 ${isOpen ? 'right-4' : 'left-1/2 -translate-x-1/2'} p-2 bg-[#0065FF] text-white rounded hover:bg-[#0747A6] transition-all duration-300`}
       >
-        {isOpen ? <FaTimes size={16} /> : <FaBars size={16} />}
+        {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
       </button>
       {isOpen && (
-        <>
-          <h2 className="text-xl font-semibold mb-8 mt-16 px-6">NextJS 실습</h2>
+        <div className="p-4 flex-grow">
+          <h2 className="text-xl font-bold mb-6 mt-12">NextJS 실습</h2>
           <nav>
-            <ul className="space-y-2 px-4">
+            <ul className="space-y-2">
               <li>
-                <Link href="/" className="block">
-                  <div className="hover:bg-white transition-colors duration-300 p-3 rounded-lg">
-                    <div className="flex items-center">
-                      <FaHome className="text-[#007AFF] mr-4" size={20} />
-                      <div>
-                        <h3 className="font-medium text-base">홈</h3>
-                      </div>
-                    </div>
-                  </div>
+                <Link href="/" className="block p-3 rounded hover:bg-[#0065FF] transition-all duration-300">
+                  <h3 className="text-lg font-semibold">Home</h3>
+                  <p className="text-sm text-blue-200">메인 페이지로 이동</p>
                 </Link>
               </li>
               <li>
-                <Link href="/todo" className="block">
-                  <div className="hover:bg-white transition-colors duration-300 p-3 rounded-lg">
-                    <div className="flex items-center">
-                      <FaListUl className="text-[#007AFF] mr-4" size={20} />
-                      <div>
-                        <h3 className="font-medium text-base">할 일 목록</h3>
-                      </div>
-                    </div>
-                  </div>
+                <Link href="/todo" className="block p-3 rounded hover:bg-[#0065FF] transition-all duration-300">
+                  <h3 className="text-lg font-semibold">Todo List</h3>
+                  <p className="text-sm text-blue-200">할 일 목록 관리</p>
                 </Link>
               </li>
             </ul>
           </nav>
-        </>
+        </div>
       )}
     </div>
   );
